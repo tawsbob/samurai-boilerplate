@@ -1,49 +1,72 @@
 # Samurai Boilerplate
 
-A modern full-stack TypeScript application boilerplate featuring a robust tech stack and best practices.
+A modern full-stack TypeScript application boilerplate using Domain-Driven Design principles.
 
-## Tech Stack
+## Features
 
-### Backend
-- Node.js
-- Express
+- 🏗️ **Monorepo Structure**: Organized with separate packages for backend and frontend
+- 🔒 **Authentication**: Complete JWT-based authentication system
+- 🎯 **Domain-Driven Design**: Clean architecture with clear separation of concerns
+- 🔍 **Type Safety**: End-to-end TypeScript support
+- 🚀 **Modern Stack**: Latest versions of all dependencies
+
+### Backend Features
+- Node.js + Express
 - TypeScript
-- Prisma (ORM)
-- ZenStack 2.x (Enhanced Prisma with access control)
-- PostgreSQL
+- PostgreSQL with Prisma ORM
+- JWT Authentication
+- Domain-Driven Design architecture
+- Unit and Integration Testing with Jest
+- Input validation
+- Error handling
+- Docker support for development
 
-### Frontend
-- React
+### Frontend Features
+- React 18
 - TypeScript
-- Vite
-- TanStack Query (formerly React Query)
-- Tailwind CSS
+- Vite for fast development
+- Tailwind CSS for styling
+- React Router for navigation
+- Context API for state management
+- HTTP client abstraction
+- Form handling
+- Protected routes
+- Responsive design
 
 ## Project Structure
 
 ```
-samurai-boilerplate/
-├── packages/
-│   ├── server/         # Backend Express server
-│   │   ├── src/
-│   │   ├── prisma/
-│   │   └── schema.zmodel
-│   └── client/         # Frontend React application
-├── docker-compose.yml  # Docker configuration for PostgreSQL
-└── package.json       # Root package.json for workspace
+packages/
+  ├── server/              # Backend package
+  │   ├── src/
+  │   │   ├── application/    # Application services
+  │   │   ├── domain/        # Domain entities and interfaces
+  │   │   ├── infrastructure/ # External services implementation
+  │   │   ├── interfaces/    # Controllers and routes
+  │   │   └── test/         # Test files
+  │   └── package.json
+  │
+  └── client/              # Frontend package
+      ├── src/
+      │   ├── components/    # Reusable React components
+      │   ├── contexts/      # React Context providers
+      │   ├── lib/          # Utility functions and helpers
+      │   ├── pages/        # Page components
+      │   └── services/     # API service abstractions
+      └── package.json
 ```
 
 ## Prerequisites
 
-- Node.js (v18 or later)
-- Docker and Docker Compose
-- npm or yarn
+- Node.js 18+
+- PostgreSQL 14+
+- Docker (optional)
 
 ## Getting Started
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/yourusername/samurai-boilerplate.git
 cd samurai-boilerplate
 ```
 
@@ -52,31 +75,23 @@ cd samurai-boilerplate
 npm install
 ```
 
-3. Start the PostgreSQL database:
+3. Set up environment variables:
 ```bash
-docker-compose up -d
+# In packages/server/.env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/samurai_db"
+JWT_SECRET="your-jwt-secret"
+
+# In packages/client/.env
+VITE_API_URL="http://localhost:3000"
 ```
 
-4. Set up environment variables:
-   - Copy `.env.example` to `.env` in the server package
-   - Update the database connection string if needed
-
-5. Generate Prisma client and ZenStack files:
+4. Start the development servers:
 ```bash
-cd packages/server
-npx zenstack generate
-npx prisma generate
-```
-
-6. Start the development servers:
-
-In separate terminals:
-```bash
-# Terminal 1 - Backend
+# Start the backend server
 cd packages/server
 npm run dev
 
-# Terminal 2 - Frontend
+# In another terminal, start the frontend server
 cd packages/client
 npm run dev
 ```
@@ -84,36 +99,42 @@ npm run dev
 ## Development
 
 ### Backend Development
-- The backend server runs on `http://localhost:3000`
-- API endpoints are available under `/api`
-- Database schema is defined in `packages/server/schema.zmodel`
-- Access control rules are defined using ZenStack's policy syntax
+
+The backend follows a Domain-Driven Design architecture:
+- `domain/`: Contains business logic and entities
+- `application/`: Application services and use cases
+- `infrastructure/`: External service implementations
+- `interfaces/`: HTTP controllers and routes
 
 ### Frontend Development
-- The frontend dev server runs on `http://localhost:5173`
-- API hooks are auto-generated in `packages/client/src/lib/hooks`
-- Styling is handled with Tailwind CSS
 
-## Features
+The frontend is organized by feature and follows React best practices:
+- `components/`: Reusable UI components
+- `contexts/`: React Context providers for state management
+- `lib/`: Utility functions and HTTP client
+- `pages/`: Page components
+- `services/`: API service abstractions
 
-- 🔐 Built-in authentication and authorization
-- 🚀 Type-safe full-stack development
-- 📝 Auto-generated API hooks
-- 🔄 Real-time data synchronization
-- 🎨 Modern UI with Tailwind CSS
-- 🛠 Developer-friendly setup
+## Testing
 
-## Scripts
+```bash
+# Run backend tests
+cd packages/server
+npm test
 
-### Server
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
+# Run frontend tests
+cd packages/client
+npm test
+```
 
-### Client
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
+## Authentication Flow
+
+The application uses JWT-based authentication:
+1. User registers or logs in
+2. Server validates credentials and returns JWT token
+3. Client stores token in localStorage
+4. Token is included in subsequent API requests
+5. Protected routes check for valid token
 
 ## Contributing
 
@@ -125,4 +146,12 @@ npm run dev
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [Express.js](https://expressjs.com/)
+- [React](https://reactjs.org/)
+- [Prisma](https://www.prisma.io/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [TypeScript](https://www.typescriptlang.org/) 
