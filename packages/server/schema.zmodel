@@ -1,0 +1,41 @@
+datasource db {
+  provider = 'postgresql'
+  url      = env('DATABASE_URL')
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+plugin hooks {
+  provider = "@zenstackhq/tanstack-query"
+  target = "react"
+  output = "../client/src/lib/hooks"
+}
+
+model User {
+  id String @id @default(uuid())
+  email String @unique
+  password String @password @omit
+  name String?
+  todos Todo[]
+
+  // everyone can signup
+  @@allow('create', true)
+  
+  // only the user can read/update their own data
+  @@allow('read,update', auth() == this)
+}
+
+model Todo {
+  id String @id @default(uuid())
+  title String
+  completed Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  // owner can do all operations
+  @@allow('all', auth() == user)
+} 
