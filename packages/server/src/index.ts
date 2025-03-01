@@ -5,12 +5,12 @@ import { PrismaClient } from '@prisma/client';
 import { enhance } from '@zenstackhq/runtime';
 import { ZenStackMiddleware } from "@zenstackhq/server/express";
 import type { Request } from 'express';
+import { createAuthRouter } from '@/interfaces/http/routes/authRoutes';
 
 const app = express();
 const prisma = new PrismaClient();
 
-
-
+// Middleware
 app.use(cors());
 app.use(express.json());
 
@@ -37,22 +37,28 @@ async function createTempUser() {
 // Initialize temporary user
 createTempUser().catch(console.error);
 
+// Initialize Prisma Client
+const enhancedPrisma = enhance(prisma);
 
+// Routes
 app.use('/api/model', 
   ZenStackMiddleware({
     getPrisma: async (req: Request) => {
       const user = await prisma.user.findFirst({
         where: { email: 'temp@example.com' }
       });
-      console.log(user);
+      
       if (!user) {
         throw new Error('User not found');
       }
       
-      return enhance(prisma, { user });
+      return enhancedPrisma;
     }
   })
 );
+
+app.use('/api/auth', createAuthRouter());
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

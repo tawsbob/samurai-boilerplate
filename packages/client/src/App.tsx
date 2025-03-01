@@ -1,28 +1,43 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { TodoList } from './components/TodoList';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from '@/contexts/AuthContext';
+import { Login } from '@/pages/Login';
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5000,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
 
-function App() {
+function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const { isAuthenticated } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+
+  return <>{children}</>;
+}
+
+function AppRoutes() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen bg-gray-100">
-        <div className="max-w-4xl mx-auto py-8 px-4">
-          <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
-            Todo App
-          </h1>
-          <TodoList />
-        </div>
-      </div>
-    </QueryClientProvider>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <div>Protected Home Page</div>
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   );
 }
 
-export default App;
+export function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </Router>
+  );
+}
