@@ -136,6 +136,73 @@ The application uses JWT-based authentication:
 4. Token is included in subsequent API requests
 5. Protected routes check for valid token
 
+## Internationalization (i18n)
+
+The application supports multiple languages through `react-i18next`. Currently supported languages are:
+
+- English (en)
+- Portuguese (pt)
+- Spanish (es)
+
+### URL Structure
+
+The language is determined by the URL prefix:
+- English: `/en/*`
+- Portuguese: `/pt/*`
+- Spanish: `/es/*`
+
+For example:
+- `/en/login` - English login page
+- `/pt/login` - Portuguese login page
+- `/es/login` - Spanish login page
+
+### Language Detection
+
+The application automatically detects the preferred language in the following order:
+1. URL path prefix
+2. Local storage
+3. Browser language
+
+If no language preference is detected or if the detected language is not supported, the application defaults to English.
+
+### Translation Files
+
+Translation files are located in the `packages/client/public/locales` directory, organized by language and namespace:
+
+```
+public/locales/
+├── en/
+│   ├── common.json   # Common translations (navigation, language names)
+│   └── auth.json     # Authentication-related translations
+├── pt/
+│   ├── common.json
+│   └── auth.json
+└── es/
+    ├── common.json
+    └── auth.json
+```
+
+### Language Switching
+
+Users can switch between languages using the language switcher component located in the top-right corner of the application. When switching languages, the current URL path is preserved, only updating the language prefix.
+
+### Adding New Translations
+
+To add new translations:
+
+1. Add translation keys to the appropriate namespace file (common.json or auth.json)
+2. Add translations for all supported languages
+3. Use the `useTranslation` hook in your components:
+
+```typescript
+import { useTranslation } from 'react-i18next';
+
+function MyComponent() {
+  const { t } = useTranslation('namespace');
+  return <div>{t('key.path')}</div>;
+}
+```
+
 ## Contributing
 
 1. Fork the repository
