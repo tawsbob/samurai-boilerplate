@@ -24,7 +24,7 @@ export function LanguageSwitcher() {
           className={`px-2 py-1 text-sm rounded ${
             i18n.language === lang
               ? 'bg-indigo-600 text-white'
-              : 'text-gray-700 hover:bg-gray-100'
+              : 'text-gray-700 bg-gray-100'
           }`}
         >
           {t(`languages.${lang}`)}

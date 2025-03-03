@@ -5,7 +5,6 @@ import { Register } from '@/pages/Register';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
-import { PageWrapper } from '@/pages/PageWrapper';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -54,7 +53,7 @@ function AppRoutes() {
       <Route path="/" element={<LanguageRedirect />} />
       
       {/* English routes */}
-      <Route path="/:lang/login" element={<PageWrapper><Login /></PageWrapper>} />
+      <Route path="/:lang/login" element={<Login />} />
       <Route path="/:lang/register" element={<Register />} />
       <Route
         path="/:lang"
