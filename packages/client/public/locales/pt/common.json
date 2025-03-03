@@ -1,0 +1,13 @@
+{
+  "navigation": {
+    "home": "Início",
+    "login": "Entrar",
+    "register": "Cadastrar",
+    "logout": "Sair"
+  },
+  "languages": {
+    "en": "Inglês",
+    "pt": "Português",
+    "es": "Espanhol"
+  }
+} 

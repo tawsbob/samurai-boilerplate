@@ -1,0 +1,13 @@
+{
+  "navigation": {
+    "home": "Home",
+    "login": "Sign in",
+    "register": "Sign up",
+    "logout": "Sign out"
+  },
+  "languages": {
+    "en": "English",
+    "pt": "Portuguese",
+    "es": "Spanish"
+  }
+} 

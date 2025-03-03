@@ -1,7 +1,11 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { Login } from '@/pages/Login';
 import { Register } from '@/pages/Register';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import '@/lib/i18n';
+import { PageWrapper } from '@/pages/PageWrapper';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -9,27 +13,60 @@ interface ProtectedRouteProps {
 
 function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated } = useAuth();
+  const location = useLocation();
   
   if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+    // Keep the language prefix when redirecting
+    const [_, lang ] = location.pathname.split('/');
+    return <Navigate to={`/${lang}/login`} />;
   }
 
   return <>{children}</>;
 }
 
+function LanguageRedirect() {
+  const { i18n } = useTranslation();
+  const location = useLocation();
+
+  useEffect(() => {
+    // If we're at the root, redirect to the preferred language
+    if (location.pathname === '/') {
+      const lang = i18n.language.split('-')[0];
+      const supportedLang = ['en', 'pt', 'es'].includes(lang) ? lang : 'en';
+      i18n.changeLanguage(supportedLang);
+    }
+    
+  }, [location.pathname, i18n]);
+
+  if (location.pathname === '/') {
+    const lang = i18n.language.split('-')[0];
+    const supportedLang = ['en', 'pt', 'es'].includes(lang) ? lang : 'en';
+    return <Navigate to={`/${supportedLang}`} replace />;
+  }
+
+  return null;
+}
+
 function AppRoutes() {
+
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/" element={<LanguageRedirect />} />
+      
+      {/* English routes */}
+      <Route path="/:lang/login" element={<PageWrapper><Login /></PageWrapper>} />
+      <Route path="/:lang/register" element={<Register />} />
       <Route
-        path="/"
+        path="/:lang"
         element={
           <ProtectedRoute>
             <div>Protected Home Page</div>
           </ProtectedRoute>
         }
       />
+
+      {/* Catch all route - redirect to preferred language */}
+      <Route path="*" element={<LanguageRedirect />} />
     </Routes>
   );
 }
