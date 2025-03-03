@@ -33,7 +33,10 @@ export function Register() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             {t('register.haveAccount')}{' '}
-            <a href={`${location.pathname.replace('/register', '/login')}`} className="font-medium text-indigo-600 hover:text-indigo-500">
+            <a
+              href={`${location.pathname.replace('/register', '/login')}`}
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
               {t('register.signIn')}
             </a>
           </p>
@@ -47,4 +50,4 @@ export function Register() {
       </div>
     </PageWrapper>
   );
-} 
+}

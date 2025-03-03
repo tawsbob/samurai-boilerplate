@@ -9,8 +9,10 @@ A modern full-stack TypeScript application boilerplate using Domain-Driven Desig
 - 🎯 **Domain-Driven Design**: Clean architecture with clear separation of concerns
 - 🔍 **Type Safety**: End-to-end TypeScript support
 - 🚀 **Modern Stack**: Latest versions of all dependencies
+- 💅 **Code Formatting**: Automated code formatting with Prettier and Husky pre-commit hooks
 
 ### Backend Features
+
 - Node.js + Express
 - TypeScript
 - PostgreSQL with Prisma ORM
@@ -22,6 +24,7 @@ A modern full-stack TypeScript application boilerplate using Domain-Driven Desig
 - Docker support for development
 
 ### Frontend Features
+
 - React 18
 - TypeScript
 - Vite for fast development
@@ -65,17 +68,20 @@ packages/
 ## Getting Started
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/samurai-boilerplate.git
 cd samurai-boilerplate
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Set up environment variables:
+
 ```bash
 # In packages/server/.env
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/samurai_db"
@@ -86,6 +92,7 @@ VITE_API_URL="http://localhost:3000"
 ```
 
 4. Start the development servers:
+
 ```bash
 # Start the backend server
 cd packages/server
@@ -101,6 +108,7 @@ npm run dev
 ### Backend Development
 
 The backend follows a Domain-Driven Design architecture:
+
 - `domain/`: Contains business logic and entities
 - `application/`: Application services and use cases
 - `infrastructure/`: External service implementations
@@ -109,6 +117,7 @@ The backend follows a Domain-Driven Design architecture:
 ### Frontend Development
 
 The frontend is organized by feature and follows React best practices:
+
 - `components/`: Reusable UI components
 - `contexts/`: React Context providers for state management
 - `lib/`: Utility functions and HTTP client
@@ -130,6 +139,7 @@ npm test
 ## Authentication Flow
 
 The application uses JWT-based authentication:
+
 1. User registers or logs in
 2. Server validates credentials and returns JWT token
 3. Client stores token in localStorage
@@ -147,11 +157,13 @@ The application supports multiple languages through `react-i18next`. Currently s
 ### URL Structure
 
 The language is determined by the URL prefix:
+
 - English: `/en/*`
 - Portuguese: `/pt/*`
 - Spanish: `/es/*`
 
 For example:
+
 - `/en/login` - English login page
 - `/pt/login` - Portuguese login page
 - `/es/login` - Spanish login page
@@ -159,6 +171,7 @@ For example:
 ### Language Detection
 
 The application automatically detects the preferred language in the following order:
+
 1. URL path prefix
 2. Local storage
 3. Browser language
@@ -221,4 +234,40 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [React](https://reactjs.org/)
 - [Prisma](https://www.prisma.io/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [TypeScript](https://www.typescriptlang.org/) 
+- [TypeScript](https://www.typescriptlang.org/)
+
+## Code Formatting
+
+The project uses Prettier for code formatting and Husky for Git hooks:
+
+- Prettier automatically formats code according to the configuration in `.prettierrc`
+- Husky runs Prettier on pre-commit to ensure consistent code style
+- Formatting rules apply to JavaScript, TypeScript, JSON, CSS, SCSS, and Markdown files
+
+### Prettier Configuration
+
+The following Prettier rules are enforced:
+
+```json
+{
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "printWidth": 100,
+  "bracketSpacing": true,
+  "arrowParens": "avoid"
+}
+```
+
+### Manual Formatting
+
+You can manually format code using the following commands:
+
+```bash
+# Format all files
+npm run format
+
+# Check formatting without making changes
+npm run format:check
+```
